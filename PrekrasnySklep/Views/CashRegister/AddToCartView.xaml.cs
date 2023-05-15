@@ -1,10 +1,8 @@
-﻿using PrekrasnyDomainLayer.Models;
-using PrekrasnySklep.ViewModels.Login;
-using PrekrasnySklep.ViewModels.Tabs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,26 +11,24 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PrekrasnySklep.Views.Tabs
+namespace PrekrasnySklep.Views.CashRegister
 {
-    public partial class UserManager : Page
+    /// <summary>
+    /// Interaction logic for AddToCartView.xaml
+    /// </summary>
+    public partial class AddToCartView : UserControl
     {
-        public UserManager()
+        public AddToCartView()
         {
             InitializeComponent();
-        }
-
-        public UserManager(TabbedViewModel viewModel)
-        {
-            InitializeComponent();
-            DataContext = viewModel;
         }
 
         private void CartSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ListView listView = cartList;
+            ListView listView = availableProducts;
             GridView gView = listView.View as GridView;
 
             var workingWidth = listView.ActualWidth - SystemParameters.VerticalScrollBarWidth; // take into account vertical scrollbar
@@ -43,6 +39,12 @@ namespace PrekrasnySklep.Views.Tabs
             gView.Columns[0].Width = workingWidth * col1;
             gView.Columns[1].Width = workingWidth * col2;
             gView.Columns[2].Width = workingWidth * col3;
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }
